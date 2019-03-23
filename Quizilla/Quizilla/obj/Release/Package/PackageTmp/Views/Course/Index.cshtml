@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Quizilla.Models.Course>
+
+@{
+    ViewBag.Title = "Courses";
+    int RowNo = 0;
+}
+
+<style>
+    input[type="search"]::-webkit-search-cancel-button {
+        -webkit-appearance: searchfield-cancel-button;
+    }
+</style>
+
+<h2>Courses</h2>
+
+@if (Model.Count() == 0 && ViewBag.Error == null)
+{
+    <div style="font-size: medium;">You don't have any courses yet.</div>
+    <div>
+        @Html.ActionLink("Get started", "Create", null, new { @class = "btn btn-success" })
+    </div>
+}
+@if (Model.Count() == 0 && ViewBag.Error != null)
+{
+    <div style="font-size: medium;">@ViewBag.Error</div>
+    <div>
+        @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-primary" })
+    </div>
+}
+else if (Model.Count() != 0 && ViewBag.Error == null)
+{
+    <form method="get" id="form">
+        <div class="row" style="margin-bottom: 16px;">
+            <p class="col-md-2">
+                @Html.ActionLink("Create new", "Create", null, new { @class = "btn btn-success" })
+            </p>
+            <div class="col-md-10 input-group">
+                <input style="float: right;" type="search" name="search" id="search" class="form-control" placeholder="Search" />
+                <span class="input-group-btn">
+                    <button style="max-height: 34px;" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-search"></i></button>
+                </span>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-bordered table-responsive table-condensed">
+        <tr>
+            <th>
+                S#
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Credits)
+            </th>
+            <th>Actions</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+            RowNo++;
+                    }
+                    @RowNo
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Credits)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.CourseId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.CourseId })
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+@section Scripts {
+    <script>
+        $('#form').submit(function () {
+            if ($.trim($("#search").val()) === "") {
+                alert('Please enter some value to search');
+                return false;
+            }
+        });
+    </script>
+}

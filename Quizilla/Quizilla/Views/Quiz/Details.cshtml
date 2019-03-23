@@ -1,0 +1,87 @@
+﻿@model Quizilla.Models.Quiz
+
+@{
+    ViewBag.Title = "Quiz Details";
+}
+
+<script language="javascript" type="text/javascript">
+	var value = '@ViewBag.AlreadyAttempted';
+    if (value)
+    {
+        alert('You have already attempted this quiz so you cannot join the quiz associated with the key ' + '@ViewBag.Key');
+    }
+</script>
+
+<h2>Details of @Model.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Course
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Course.Code): @Html.DisplayFor(model => model.Course.Title)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Duration)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Duration) minutes
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Date)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Date)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Instructions)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Instructions)
+            </dd>
+
+            <dt>
+                Total Questions
+            </dt>
+
+            <dd>
+                @Model.Questions.ToList().Count()
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PassingMarks)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PassingMarks)
+            </dd>
+
+            <dt>
+
+            </dt>
+
+            <dd>
+                <br />
+                <input type="submit" value="Start" class="btn btn-primary" />
+                @Html.ActionLink("Back", "Join", null, new { @class = "btn btn-link" })
+            </dd>
+        </dl>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

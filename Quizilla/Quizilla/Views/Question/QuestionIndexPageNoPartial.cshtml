@@ -1,0 +1,8 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<Quizilla.Models.Question>
+
+@if (Model.Count() > 5 || Model.PageCount > 1)
+{
+    <span>Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</span>
+    @Html.PagedListPager(Model, page => Url.Action("Index", "Question", new { id = Model.FirstOrDefault().QuizId, page = page }))
+}

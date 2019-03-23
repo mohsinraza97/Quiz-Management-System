@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<style>
+    /*img {
+        height: 150px;
+        width: 150px;
+    }*/
+</style>
+
+<div class="jumbotron">
+    <h1 style="text-align: center;">Welcome to Quizilla</h1>
+    <p style="text-align: center;" class="lead">@ViewBag.Message</p>
+    @*<p><a href="http://asp.net" class="btn btn-primary btn-large">Learn more &raquo;</a></p>*@
+</div>
+
+<div class="row">
+    <div class="col-md-4 text-center">
+        <img src="~/Content/Images/Author.jpg" alt="Top Authors" />
+        <h4>Top Authors</h4>
+    </div>
+    <div class="col-md-4 text-center">
+        <img src="~/Content/Images/Group.jpg" alt="Top Groups" />
+        <h4>Top Groups</h4>
+    </div>
+    <div class="col-md-4 text-center">
+        <img src="~/Content/Images/Exam.jpg" alt="Top Exams" />
+        <h4>Top Exams</h4>
+    </div>
+</div>

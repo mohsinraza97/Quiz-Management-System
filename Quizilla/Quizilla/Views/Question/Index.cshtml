@@ -1,0 +1,57 @@
+﻿@using PagedList;
+@model Quizilla.Models.Quiz
+
+
+@{
+    ViewBag.Title = "Questions";
+}
+
+<style>
+    input[type="search"]::-webkit-search-cancel-button {
+        -webkit-appearance: searchfield-cancel-button;
+    }
+</style>
+
+<h2>Questions for @Model.Title</h2>
+
+@if (Model.Questions.Count() == 0)
+{
+    <div style="font-size: medium;">You don't have any questions for the above mentioned quiz yet.</div>
+    <div>
+        @Html.ActionLink("Get started", "Create", new { quizId = Model.QuizId }, new { @class = "btn btn-success" })
+    </div>
+}
+else
+{
+    <form method="get" id="form" action="@Url.Action("Search", "Question", new { id = Model.QuizId })">
+        <div class="row" style="margin-bottom: 16px;">
+            <p class="col-md-2">
+                @Html.ActionLink("Create new", "Create", new { quizId = Model.QuizId }, new { @class = "btn btn-success" })
+            </p>
+            <div class="col-md-10 input-group">
+                <input style="float: right;" type="search" name="search" id="search" class="form-control" placeholder="Search" />
+                <span class="input-group-btn">
+                    <button style="max-height: 34px;" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-search"></i></button>
+                </span>
+            </div>
+        </div>
+    </form>
+
+    @Html.Partial("QuestionPartial", Model.Questions.OrderBy(q => q.QuestionId).ToPagedList((int)ViewData["CurrentPage"], (int)ViewData["PageSize"]))
+    @Html.Partial("QuestionIndexPageNoPartial", Model.Questions.OrderBy(q => q.QuestionId).ToPagedList((int)ViewData["CurrentPage"], (int)ViewData["PageSize"]))    
+}
+
+@section Scripts {
+    <script>
+        $('#form').submit(function () {
+            if ($.trim($("#search").val()) === "") {
+                alert('Please enter some value to search');
+                return false;
+            }
+        });
+
+        //$("#search").on("keyup", function () {
+        //    $('#form').submit();
+        //});
+    </script>
+}

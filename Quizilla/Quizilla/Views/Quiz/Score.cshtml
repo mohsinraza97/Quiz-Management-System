@@ -1,0 +1,20 @@
+﻿@using Quizilla.Controllers;
+
+@{
+    ViewBag.Title = "Score";
+}
+
+<h2>Score</h2>
+
+@if (ViewBag.QuizTitle != null)
+{
+    <h2>@ViewBag.QuizTitle</h2>
+    if (ViewBag.Passed == true)
+    {
+        <h4 style="color: #5cb85c;">@ViewBag.ScoreMsg</h4>
+    }
+    else
+    {
+        <h4 style="color: #d9534f;">@ViewBag.ScoreMsg</h4>
+    }
+}

@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Quizilla</title>
+    <!-- For scroll to top icon -->
+    <link href="~/Content/font-awesome.css" rel="stylesheet" type="text/css" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <!-- Return to Top -->
+    <a href="javascript:" id="return-to-top"><i class="icon-chevron-up"></i></a>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Quizilla", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                </ul>
+                @Html.Partial("_LoginAndNavPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <span>&copy; @DateTime.Now.Year - Quizilla</span>
+            <div>
+                <a href="#">Terms & Conditions</a>&nbsp;|&nbsp; <a href="#">Privacy Policy</a>
+            </div>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script>
+        $(window).scroll(function () {
+            if ($(this).scrollTop() >= 50) {
+                $('#return-to-top').fadeIn(200);
+            } else {
+                $('#return-to-top').fadeOut(200);
+            }
+        });
+        $('#return-to-top').click(function () {
+            $('body,html').animate({
+                scrollTop: 0
+            }, 500);
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

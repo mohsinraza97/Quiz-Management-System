@@ -1,0 +1,66 @@
+﻿@if (Session["UserId"] != null)
+{
+    using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Dashboard", "Dashboard", "Home", null, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        @if (Session["Type"].Equals("Teacher"))
+                        {
+                            <li>@Html.ActionLink("Courses", "Index", "Course")</li>
+                            <li>@Html.ActionLink("Quizzes", "Index", "Quiz")</li>
+                            <li>@Html.ActionLink("Results", "Index", "Result")</li>
+                        }
+                        else if (Session["Type"].Equals("Student"))
+                        {
+                            <li>@Html.ActionLink("Join Quiz", "Join", "Quiz")</li>
+                            <li>@Html.ActionLink("My Quizzes", "MyQuizzes", "Result")</li>
+                        }
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                                @Session["UserId"]
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    @Html.ActionLink("Profile", "Profile", "Account")
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Change password", "ChangePassword", "Account")
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    @Html.ActionLink("Log off", "LogOff", "Account")
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Register", "Register", "Account")</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account")</li>
+    </ul>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

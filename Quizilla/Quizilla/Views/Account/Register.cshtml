@@ -1,0 +1,105 @@
+﻿@model Quizilla.Models.User
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>Register</h2>
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Error!</strong> @ViewBag.Error
+            </div>
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserId, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.UserId, new { @class = "form-control", placeholder = "e.g. Emad01", @onkeypress = "return AvoidSpace(event);", maxlength = "20" })
+                @Html.ValidationMessageFor(model => model.UserId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "e.g. Emad-ud-din", maxlength = "40" })
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "e.g. emad01@example.com", @onkeypress = "return AvoidSpace(event);", maxlength = "70" })
+                @Html.ValidationMessageFor(model => model.Email)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Enter your password", @onkeypress = "return AvoidSpace(event);", maxlength = "20" })
+                @Html.ValidationMessageFor(model => model.Password)
+            </div>
+        </div>
+
+        @{
+        List<SelectListItem> typeDropDownItems = new List<SelectListItem>
+        {
+            new SelectListItem { Text = "Teacher", Value="Teacher" },
+            new SelectListItem { Text = "Student", Value="Student" }
+        };
+        }
+
+        <div class="form-group" id="imageDiv">
+            @Html.LabelFor(model => model.Image, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <input id="Image" name="image" type="file" class="form-control" accept="image/*" />
+                @Html.ValidationMessageFor(model => model.Image)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Type, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.DropDownList("Type", new SelectList(typeDropDownItems, "Value", "Text"), "-- Select type --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Type)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Register" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    Already have an account? @Html.ActionLink("Log in", "Login")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function AvoidSpace(event) {
+            var k = event ? event.which : window.event.keyCode;
+            if (k == 32) return false;
+        }
+
+        $(document).ready(function () {
+            $("#imageDiv").hide();
+        });
+    </script>
+}

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Quizilla.Models.ResultViewModel>
+
+@{
+    ViewBag.Title = "Results";
+}
+
+<style>
+    input[type="search"]::-webkit-search-cancel-button {
+        -webkit-appearance: searchfield-cancel-button;
+    }
+</style>
+
+<h2>Results</h2>
+
+@if (Model.Count() == 0 && ViewBag.Error == null)
+{
+    <div style="font-size: medium;">You don't have any results yet.</div>
+}
+else if (Model.Count() != 0 && ViewBag.Error == null)
+{
+    <form method="get" id="form" action="@Url.Action("Index")" 
+          data-quizilla-ajax="true" data-quizilla-target="#resultsList">
+        <div class="row" style="margin-bottom: 16px;">
+            <p class="col-md-2">
+                <a href="~/Result/Index" class="btn btn-success">
+                    <span class="glyphicon glyphicon-refresh"></span> Refresh
+                </a>
+            </p>
+            <div class="col-md-10 input-group">
+                <input style="float: right;" type="search" name="search" id="search" class="form-control" placeholder="Search" />
+                <span class="input-group-btn">
+                    <button style="max-height: 34px;" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-search"></i></button>
+                </span>
+            </div>
+        </div>
+    </form>
+
+    @Html.Partial("ResultsPartial", Model)
+}
+
+@section Scripts {
+    <script>
+        //$('#form').submit(function () {
+        //    if ($.trim($("#search").val()) === "") {
+        //        alert('Please enter some value to search');
+        //        return false;
+        //    }
+        //});
+
+        var ajaxFormSubmit = function () {
+            var $form = $(this);
+            var options = {
+                url: $form.attr("action"),
+                type: $form.attr("method"),
+                data: $form.serialize()
+            };
+
+            $.ajax(options).done(function (data) {
+                var $target = $($form.attr("data-quizilla-target"));
+                $target.replaceWith(data);
+
+            });
+
+            return false;
+        };
+
+        $(function () {
+            $("form[data-quizilla-ajax='true']").submit(ajaxFormSubmit);
+        });
+    </script>
+}

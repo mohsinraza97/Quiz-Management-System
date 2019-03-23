@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h2>Dashboard</h2>
+
+<div style="display: flex;">
+    <a href="@Url.Action("Profile", "Account")">
+        <img src="~/Content/Images/@ViewBag.Image" width="100" height="100" style="cursor: pointer" />
+    </a>
+    <div style="margin-left: 18px;">
+        <h4>
+            @ViewBag.Name
+            <br />
+            <h4>@Session["Type"].ToString()</h4>
+        </h4>
+    </div>
+</div>

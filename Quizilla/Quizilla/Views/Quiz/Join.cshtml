@@ -1,0 +1,51 @@
+﻿@model Quizilla.Models.JoinQuizViewModel
+
+@{
+    ViewBag.Title = "Join Quiz";
+}
+
+<h2>Join Quiz</h2>
+<div>Ask your teacher for the quiz key, then enter it here.</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Error!</strong> @ViewBag.Error
+            </div>
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.QuizId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.QuizId, new { @class = "form-control", placeholder = "e.g. eXsJ5i", @onkeypress = "return AvoidSpace(event);", id = "QuizId", type = "password", maxlength = "6" })
+                @Html.ValidationMessageFor(model => model.QuizId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Join" class="btn btn-primary" />
+                @Html.ActionLink("Cancel", "Dashboard", "Home", null, new { @class = "btn btn-link" })
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function AvoidSpace(event) {
+            var k = event ? event.which : window.event.keyCode;
+            if (k == 32) return false;
+        }
+    </script>
+}

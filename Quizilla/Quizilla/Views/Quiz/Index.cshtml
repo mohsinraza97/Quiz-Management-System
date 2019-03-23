@@ -1,0 +1,140 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<Quizilla.Models.Quiz>
+
+@{
+    ViewBag.Title = "Quizzes";
+    int RowNo = 0;
+}
+
+<style>
+    input[type="search"]::-webkit-search-cancel-button {
+        -webkit-appearance: searchfield-cancel-button;
+    }
+</style>
+
+<h2>Quizzes</h2>
+
+@if (Model.Count() == 0 && ViewBag.Error == null)
+{
+    <div style="font-size: medium;">You don't have any quizzes yet.</div>
+    <div>
+        @Html.ActionLink("Get started", "Create", null, new { @class = "btn btn-success" })
+    </div>
+}
+@if (Model.Count() == 0 && ViewBag.Error != null)
+{
+    <div style="font-size: medium;">@ViewBag.Error</div>
+    <div>
+        @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-primary" })
+    </div>
+}
+else if (Model.Count() != 0 && ViewBag.Error == null)
+{
+    <form method="get" id="form">
+        <div class="row" style="margin-bottom: 16px;">
+            <p class="col-md-2">
+                @Html.ActionLink("Create new", "Create", null, new { @class = "btn btn-success" })
+            </p>
+            <div class="col-md-10 input-group">
+                <input style="float: right;" type="search" name="search" id="search" class="form-control" placeholder="Search" />
+                <span class="input-group-btn">
+                    <button style="max-height: 34px;" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-search"></i></button>
+                </span>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-bordered table-responsive table-condensed">
+        <tr>
+            <th>
+                S#
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().QuizId)
+            </th>
+            <th>
+                Course
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Instructions)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().PassingMarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().MaximumMarks)
+            </th>
+            <th>Actions</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+            RowNo++;
+                    }
+                    @RowNo
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuizId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.Code): @Html.DisplayFor(modelItem => item.Course.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration) minutes
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Instructions)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PassingMarks)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaximumMarks)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.QuizId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.QuizId }) |
+                    @Html.ActionLink("Questions", "Index", "Question", new { id = item.QuizId }, null)
+                </td>
+            </tr>
+        }
+    </table>
+    
+    if (Model.Count() > 5 || Model.PageCount > 1)
+    {
+        <span>Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</span>
+        @Html.PagedListPager(Model, page => Url.Action("Index", "Quiz", new { search = ViewBag.Search, page = page }))
+    }
+}
+
+@section Scripts {
+    <script>
+        $('#form').submit(function () {
+            if ($.trim($("#search").val()) === "") {
+                alert('Please enter some value to search');
+                return false;
+            }
+        });
+
+        @*var textToHighligt = '@ViewBag.Search'; //<---put in quotes
+        $("td:contains(" + textToHighligt + ")").css("background-color", "yellow");*@
+    </script>
+}

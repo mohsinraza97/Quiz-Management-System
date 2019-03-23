@@ -1,0 +1,87 @@
+﻿@model PagedList.IPagedList<Quizilla.Models.Question>
+
+@{
+    int RowNo = 0;
+}
+
+<table class="table table-bordered table-responsive table-condensed">
+    <tr>
+        <th>
+            S#
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().QuestionId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Number)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Option1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Option2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Option3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Option4)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Answer)
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @{
+        RowNo++;
+                }
+                @RowNo
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuestionId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Option1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Option2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Option3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Option4)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Answer)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.QuestionId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.QuestionId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.QuestionId })
+            </td>
+        </tr>
+    }
+</table>

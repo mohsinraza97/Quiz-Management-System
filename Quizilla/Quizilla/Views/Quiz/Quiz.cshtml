@@ -1,0 +1,106 @@
+﻿@using Quizilla.Controllers;
+@model Quizilla.Models.Question
+
+@{
+    ViewBag.Title = "Quiz";
+}
+
+<style>
+    label {
+        font-size: medium;
+        font-weight: normal !important;
+        cursor: pointer;
+    }
+</style>
+
+<script language="javascript" type="text/javascript">
+    var value = '@ViewBag.AlreadyAttempted';
+    if (value) {
+        alert('You have already attempted this quiz so you cannot join the quiz associated with the key ' + '@ViewBag.Key');
+    }
+</script>
+
+@if (Model.Quiz.Title != null)
+{
+    <h2>@Model.Quiz.Title</h2>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <div class="col-md-10" style="font-size: large;">
+                <strong>Question @Model.Number) @Model.Description</strong>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <label>
+                    <input type="radio" id="Option1" name="option" value="@Model.Option1" />
+                    @Model.Option1
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <label>
+                    <input type="radio" id="Option2" name="option" value="@Model.Option2" />
+                    @Model.Option2
+                </label>
+            </div>
+        </div>
+
+        @if (Model.Type.Equals("MCQS"))
+        {
+            <div class="form-group">
+                <div class="col-md-10">
+                    <label>
+                        <input type="radio" id="Option3" name="option" value="@Model.Option3" />
+                        @Model.Option3
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    <label>
+                        <input type="radio" id="Option4" name="option" value="@Model.Option4" />
+                        @Model.Option4
+                    </label>
+                </div>
+            </div>
+        }
+
+        <div class="form-group">
+            <div class="col-md-10">
+                @if (QuizController._questionArray.Length != 0)
+                {
+                    <input type="submit" id="btnNext" value="Next &raquo;" class="btn btn-primary" />
+                }
+                else
+                {
+                    <input type="submit" id="btnNext" value="Finish" class="btn btn-primary" />
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $("#btnNext").attr("disabled", true);
+            $("input[type=radio][name=option]").change(function () {
+                $("#btnNext").attr("disabled", false);
+            });
+        });
+    </script>
+}

@@ -1,0 +1,175 @@
+﻿@model Quizilla.Models.Question
+
+@{
+    ViewBag.Title = "Questions";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+        
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Error!</strong> @ViewBag.Error
+            </div>
+        }
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.QuestionId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.QuestionId, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.QuestionId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Number, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Number, new { @class = "form-control", placeholder = "e.g. 1", @onkeypress = "return AvoidSpace(event);", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.Number)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "5", cols = "5", placeholder = "Enter question" })
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+        </div>
+
+        @{
+            List<SelectListItem> typeDropDownItems = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "MCQS", Value="MCQS" },
+                new SelectListItem { Text = "T/F", Value="T/F" },
+            };
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Type, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.DropDownList("Type", new SelectList(typeDropDownItems, "Value", "Text"), "-- Select type --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Type)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Option1, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="form-inline">
+                    @Html.TextBoxFor(model => model.Option1, new { @class = "form-control", placeholder = "Enter Option1", maxlength = "512" })
+                    <input style="outline: none;" type="button" id="btnOption1SetAsAnswer" value="Set as answer" class="btn btn-link" />
+                </div>
+                @Html.ValidationMessageFor(model => model.Option1)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Option2, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="form-inline">
+                    @Html.TextBoxFor(model => model.Option2, new { @class = "form-control", placeholder = "Enter Option2", maxlength = "512" })
+                    <input style="outline: none;" type="button" id="btnOption2SetAsAnswer" value="Set as answer" class="btn btn-link" />
+                </div>
+                @Html.ValidationMessageFor(model => model.Option2)
+            </div>
+        </div>
+
+        <div class="form-group" id="Option3Div">
+            @Html.LabelFor(model => model.Option3, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="form-inline">
+                    @Html.TextBoxFor(model => model.Option3, new { @class = "form-control", placeholder = "Enter Option3", maxlength = "512" })
+                    <input style="outline: none;" type="button" id="btnOption3SetAsAnswer" value="Set as answer" class="btn btn-link" />
+                </div>
+                @Html.ValidationMessageFor(model => model.Option3)
+            </div>
+        </div>
+
+        <div class="form-group" id="Option4Div">
+            @Html.LabelFor(model => model.Option4, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="form-inline">
+                    @Html.TextBoxFor(model => model.Option4, new { @class = "form-control", placeholder = "Enter Option4", maxlength = "512" })
+                    <input style="outline: none;" type="button" id="btnOption4SetAsAnswer" value="Set as answer" class="btn btn-link" />
+                </div>
+                @Html.ValidationMessageFor(model => model.Option4)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Answer, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Answer, new { @class = "form-control", placeholder = "Enter answer", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.Answer)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                @Html.ActionLink("Cancel", "Index", new { id = Model.QuizId }, new { @class = "btn btn-link" })
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function AvoidSpace(event) {
+            var k = event ? event.which : window.event.keyCode;
+            if (k == 32) return false;
+        }
+
+        $(document).ready(function () {
+            $("#Type").show(function () {
+                if ($("#Type").val() == "T/F") {
+                    $("#Option3Div").hide();
+                    $("#Option4Div").hide();
+                }
+                else {
+                    $("#Option3Div").show();
+                    $("#Option4Div").show();
+                }
+            });
+
+            $("#Type").change(function () {
+                if ($("#Type").val() == "T/F") {
+                    $("#Option1").val("True");
+                    $("#Option2").val("False");
+                    $("#Option3Div").hide();
+                    $("#Option4Div").hide();
+                }
+                else {
+                    $("#Option1").val("");
+                    $("#Option2").val("");
+                    $("#Option3Div").show();
+                    $("#Option4Div").show();
+                }
+            });
+        });
+
+        $("#btnOption1SetAsAnswer").click(function () {
+            $("#Answer").val($("#Option1").val());
+        });
+        $("#btnOption2SetAsAnswer").click(function () {
+            $("#Answer").val($("#Option2").val());
+        });
+        $("#btnOption3SetAsAnswer").click(function () {
+            $("#Answer").val($("#Option3").val());
+        });
+        $("#btnOption4SetAsAnswer").click(function () {
+            $("#Answer").val($("#Option4").val());
+        });
+    </script>
+}
